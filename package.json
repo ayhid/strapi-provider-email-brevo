@@ -1,19 +1,7 @@
 {
-  "name": "@ayhid/strapi-provider-email-brevo",
-  "version": "2.0.0",
-  "description": "Brevo (Sendinblue) email provider for Strapi v5 using Transactional Email API",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "name": "@ayhid/strapi-plugin-email-brevo",
+  "version": "0.0.0-development",
+  "description": "Brevo (Sendinblue) email plugin for Strapi v5 with admin panel configuration",
   "license": "MIT",
   "author": {
     "name": "Ayoub Hidri",
@@ -29,7 +17,6 @@
   "homepage": "https://github.com/ayhid/strapi-provider-email-brevo#readme",
   "keywords": [
     "strapi",
-    "strapi-provider",
     "strapi-plugin",
     "email",
     "brevo",
@@ -38,39 +25,68 @@
     "strapi-v5",
     "strapi-email"
   ],
-  "strapi": {
-    "name": "brevo",
-    "displayName": "Brevo Email Provider",
-    "description": "Send transactional emails via Brevo API with dev fallback",
-    "kind": "provider"
+  "type": "commonjs",
+  "exports": {
+    "./strapi-admin": {
+      "source": "./admin/src/index.ts",
+      "import": "./dist/admin/index.mjs",
+      "require": "./dist/admin/index.js",
+      "default": "./dist/admin/index.js"
+    },
+    "./strapi-server": {
+      "source": "./server/src/index.ts",
+      "import": "./dist/server/index.mjs",
+      "require": "./dist/server/index.js",
+      "default": "./dist/server/index.js"
+    },
+    "./package.json": "./package.json"
   },
-  "peerDependencies": {
-    "@strapi/strapi": "^5.0.0"
+  "files": [
+    "dist",
+    "strapi-admin.js",
+    "strapi-server.js"
+  ],
+  "scripts": {
+    "build": "strapi-plugin build",
+    "clean": "rm -rf dist",
+    "develop": "strapi-plugin watch",
+    "verify": "strapi-plugin verify",
+    "prepublishOnly": "npm run build"
+  },
+  "strapi": {
+    "name": "email-brevo",
+    "displayName": "Brevo Email",
+    "description": "Send transactional emails via Brevo API with admin panel configuration",
+    "kind": "plugin"
   },
   "dependencies": {
     "@getbrevo/brevo": "^3.0.0"
   },
-  "scripts": {
-    "build": "tsc",
-    "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build",
-    "typecheck": "tsc --noEmit"
-  },
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
+    "@strapi/design-system": "^2.0.0",
+    "@strapi/icons": "^2.0.0",
+    "@strapi/sdk-plugin": "^5.0.0",
+    "@strapi/strapi": "^5.0.0",
+    "@tanstack/react-query": "^5.0.0",
     "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "semantic-release": "^25.0.0",
+    "styled-components": "^6.1.19",
     "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "@strapi/strapi": "^5.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": [
-    "dist",
-    "README.md",
-    "LICENSE"
-  ],
   "publishConfig": {
     "access": "public"
   },
