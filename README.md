@@ -1,11 +1,13 @@
-# strapi-provider-email-brevo
+# @ayhid/strapi-provider-email-brevo
 
-[![npm version](https://img.shields.io/npm/v/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/strapi-provider-email-brevo)
-[![npm downloads](https://img.shields.io/npm/dm/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/strapi-provider-email-brevo)
+[![npm version](https://img.shields.io/npm/v/@ayhid/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-provider-email-brevo)
+[![npm downloads](https://img.shields.io/npm/dm/@ayhid/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-provider-email-brevo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Strapi v5](https://img.shields.io/badge/Strapi-v5-blue.svg)](https://strapi.io/)
 
 Brevo (formerly Sendinblue) email provider for **Strapi v5** using the Transactional Email API.
+
+> **Note:** This is a Strapi v5 compatible provider. For Strapi v4, see the original [strapi-provider-email-brevo](https://www.npmjs.com/package/strapi-provider-email-brevo).
 
 ## Features
 
@@ -20,10 +22,10 @@ Brevo (formerly Sendinblue) email provider for **Strapi v5** using the Transacti
 
 ```bash
 # Using npm
-npm install strapi-provider-email-brevo @getbrevo/brevo
+npm install @ayhid/strapi-provider-email-brevo @getbrevo/brevo
 
 # Using yarn
-yarn add strapi-provider-email-brevo @getbrevo/brevo
+yarn add @ayhid/strapi-provider-email-brevo @getbrevo/brevo
 ```
 
 ## Configuration
@@ -52,7 +54,7 @@ Update your `config/plugins.js` or `config/plugins.ts`:
 module.exports = ({ env }) => ({
   email: {
     config: {
-      provider: 'strapi-provider-email-brevo',
+      provider: '@ayhid/strapi-provider-email-brevo',
       providerOptions: {
         apiKey: env('BREVO_API_KEY'),
       },
@@ -73,7 +75,7 @@ module.exports = ({ env }) => ({
 export default ({ env }) => ({
   email: {
     config: {
-      provider: 'strapi-provider-email-brevo',
+      provider: '@ayhid/strapi-provider-email-brevo',
       providerOptions: {
         apiKey: env('BREVO_API_KEY'),
       },
