@@ -1,3 +1,20 @@
+# [2.0.0](https://github.com/ayhid/strapi-provider-email-brevo/compare/v1.0.0...v2.0.0) (2026-01-03)
+
+
+* feat!: convert to TypeScript ([a954bac](https://github.com/ayhid/strapi-provider-email-brevo/commit/a954bacfde4b1edba01ac9d0483ea121218a07dd))
+
+
+### BREAKING CHANGES
+
+* Package now exports from dist/ instead of root
+
+- Add TypeScript configuration with strict type checking
+- Create src/index.ts with proper type definitions
+- Export interfaces: EmailAddress, ProviderOptions, EmailSettings, SendOptions, EmailProvider
+- Update package.json with types, exports field, and build scripts
+- Add build step to release workflow
+- Remove old JavaScript index.js
+
 # 1.0.0 (2026-01-03)
 
 
