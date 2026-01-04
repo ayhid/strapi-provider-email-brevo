@@ -1,102 +1,78 @@
-# @ayhid/strapi-provider-email-brevo
+# @ayhid/strapi-plugin-email-brevo
 
-[![npm version](https://img.shields.io/npm/v/@ayhid/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-provider-email-brevo)
-[![npm downloads](https://img.shields.io/npm/dm/@ayhid/strapi-provider-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-provider-email-brevo)
+[![npm version](https://img.shields.io/npm/v/@ayhid/strapi-plugin-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-plugin-email-brevo)
+[![npm downloads](https://img.shields.io/npm/dm/@ayhid/strapi-plugin-email-brevo.svg)](https://www.npmjs.com/package/@ayhid/strapi-plugin-email-brevo)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Strapi v5](https://img.shields.io/badge/Strapi-v5-blue.svg)](https://strapi.io/)
 
-Brevo (formerly Sendinblue) email provider for **Strapi v5** using the Transactional Email API.
-
-> **Note:** This is a Strapi v5 compatible provider. For Strapi v4, see the original [strapi-provider-email-brevo](https://www.npmjs.com/package/strapi-provider-email-brevo).
+Brevo (formerly Sendinblue) email plugin for **Strapi v5** with admin panel configuration.
 
 ## Features
 
+- **Admin Panel Settings** - Configure email settings directly from the Strapi admin
 - **Strapi v5 compatible** - Built for the latest Strapi version
 - **Uses Brevo API** - Direct API calls (not SMTP) for faster, more reliable delivery
-- **Development fallback** - Logs emails to console when no API key is configured
+- **Test Email** - Send test emails from the admin panel to verify configuration
+- **Development fallback** - Logs emails to console when disabled or no API key is configured
 - **Full email support** - HTML, plain text, CC, BCC, reply-to
-- **Error codes** - Returns consistent error codes for easy handling
-- **TypeScript friendly** - Works seamlessly in TypeScript projects
+- **TypeScript** - Fully typed codebase
 
 ## Installation
 
 ```bash
-# Using npm
-npm install @ayhid/strapi-provider-email-brevo @getbrevo/brevo
-
-# Using yarn
-yarn add @ayhid/strapi-provider-email-brevo @getbrevo/brevo
+npm install @ayhid/strapi-plugin-email-brevo
 ```
 
 ## Configuration
 
-### 1. Add Environment Variables
+### Option 1: Admin Panel (Recommended)
 
-Add these to your `.env` file:
+After installation, navigate to **Settings > Brevo Email** in your Strapi admin panel to configure:
+
+- **Enable/Disable** - Toggle email sending on/off
+- **API Key** - Your Brevo API key
+- **Default From Email** - Default sender email address
+- **Default From Name** - Default sender name
+- **Default Reply-To** - Default reply-to address
+
+You can also send a test email to verify your configuration works correctly.
+
+### Option 2: Environment Variables
+
+You can also configure the plugin via environment variables. Add to your `.env`:
 
 ```bash
-# Required for production (optional in development - falls back to console logging)
 BREVO_API_KEY=xkeysib-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-# Default sender email (must be verified in Brevo)
 BREVO_SENDER_EMAIL=noreply@yourdomain.com
-
-# Default sender name
 BREVO_SENDER_NAME=Your App Name
 ```
 
-### 2. Configure the Plugin
-
-Update your `config/plugins.js` or `config/plugins.ts`:
-
-```javascript
-// config/plugins.js
-module.exports = ({ env }) => ({
-  email: {
-    config: {
-      provider: '@ayhid/strapi-provider-email-brevo',
-      providerOptions: {
-        apiKey: env('BREVO_API_KEY'),
-      },
-      settings: {
-        defaultFrom: env('BREVO_SENDER_EMAIL', 'noreply@example.com'),
-        defaultReplyTo: env('BREVO_SENDER_EMAIL', 'noreply@example.com'),
-        defaultSenderName: env('BREVO_SENDER_NAME', 'My App'),
-      },
-    },
-  },
-});
-```
-
-**TypeScript version:**
+Then configure in `config/plugins.ts`:
 
 ```typescript
-// config/plugins.ts
 export default ({ env }) => ({
-  email: {
+  'email-brevo': {
+    enabled: true,
     config: {
-      provider: '@ayhid/strapi-provider-email-brevo',
-      providerOptions: {
-        apiKey: env('BREVO_API_KEY'),
-      },
-      settings: {
-        defaultFrom: env('BREVO_SENDER_EMAIL', 'noreply@example.com'),
-        defaultReplyTo: env('BREVO_SENDER_EMAIL', 'noreply@example.com'),
-        defaultSenderName: env('BREVO_SENDER_NAME', 'My App'),
-      },
+      apiKey: env('BREVO_API_KEY'),
+      defaultFrom: env('BREVO_SENDER_EMAIL', 'noreply@example.com'),
+      defaultFromName: env('BREVO_SENDER_NAME', 'My App'),
+      defaultReplyTo: env('BREVO_SENDER_EMAIL'),
     },
   },
 });
 ```
+
+> **Note:** Settings configured in the admin panel take precedence over environment variables.
 
 ## Usage
 
 ### Sending Emails
 
-Use Strapi's email service as usual:
+Use Strapi's email service:
 
-```javascript
-await strapi.plugins['email'].services.email.send({
+```typescript
+await strapi.plugins['email-brevo'].services.email.send({
   to: 'recipient@example.com',
   subject: 'Hello from Strapi!',
   text: 'This is a plain text email.',
@@ -106,8 +82,8 @@ await strapi.plugins['email'].services.email.send({
 
 ### With CC and BCC
 
-```javascript
-await strapi.plugins['email'].services.email.send({
+```typescript
+await strapi.plugins['email-brevo'].services.email.send({
   to: 'recipient@example.com',
   cc: ['cc1@example.com', 'cc2@example.com'],
   bcc: 'bcc@example.com',
@@ -118,9 +94,10 @@ await strapi.plugins['email'].services.email.send({
 
 ### Custom Sender
 
-```javascript
-await strapi.plugins['email'].services.email.send({
-  from: 'Custom Sender <custom@yourdomain.com>',
+```typescript
+await strapi.plugins['email-brevo'].services.email.send({
+  from: 'custom@yourdomain.com',
+  fromName: 'Custom Sender',
   to: 'recipient@example.com',
   replyTo: 'replies@yourdomain.com',
   subject: 'Custom sender example',
@@ -128,21 +105,29 @@ await strapi.plugins['email'].services.email.send({
 });
 ```
 
+## Admin Panel
+
+The plugin adds a settings page under **Settings > Brevo Email** where you can:
+
+1. **Enable/Disable** the plugin - When disabled, emails are logged to console
+2. **Configure API Key** - Your Brevo transactional email API key
+3. **Set Default Sender** - Email and name for outgoing emails
+4. **Set Reply-To** - Default reply-to address
+5. **Send Test Email** - Verify your configuration works
+
 ## Development Mode
 
-When `BREVO_API_KEY` is not set, the provider automatically falls back to **console logging**:
+When the plugin is disabled or no API key is configured, emails are logged to the console:
 
 ```
-[Brevo] No API key configured - emails will be logged to console
-
-📧 [DEV MODE] Email would be sent:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-From: noreply@example.com
+[Brevo Email] Plugin disabled - logging email to console
+================================================================================
+From: noreply@example.com (My App)
 To: recipient@example.com
 Subject: Test Email
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Text Preview: This is the email content...
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+--------------------------------------------------------------------------------
+Text: This is the email content...
+================================================================================
 ```
 
 This is perfect for local development without needing a Brevo account.
@@ -150,43 +135,14 @@ This is perfect for local development without needing a Brevo account.
 ## Getting a Brevo API Key
 
 1. Sign up or log in at [Brevo](https://app.brevo.com)
-2. Navigate to **Settings → SMTP & API**
+2. Navigate to **Settings > SMTP & API**
 3. Click **"Generate a new API key"**
 4. Copy the key (starts with `xkeysib-...`)
-5. Add it to your `.env` file
-
-## Error Codes
-
-The provider returns consistent error codes instead of messages:
-
-| Code | Description |
-|------|-------------|
-| `EMAIL_SEND_FAILED` | General send failure |
-| `EMAIL_INVALID_RECIPIENT` | Invalid email address |
-| `EMAIL_API_UNAUTHORIZED` | Invalid or missing API key |
-| `EMAIL_RATE_LIMITED` | Brevo rate limit exceeded |
-
-Handle errors in your code:
-
-```javascript
-try {
-  await strapi.plugins['email'].services.email.send({
-    to: 'recipient@example.com',
-    subject: 'Test',
-    text: 'Hello!',
-  });
-} catch (error) {
-  if (error.message === 'EMAIL_RATE_LIMITED') {
-    // Wait and retry
-  } else if (error.message === 'EMAIL_API_UNAUTHORIZED') {
-    // Check API key configuration
-  }
-}
-```
+5. Add it in the admin panel or your `.env` file
 
 ## Why Brevo API vs SMTP?
 
-This provider uses Brevo's **Transactional Email API** instead of SMTP:
+This plugin uses Brevo's **Transactional Email API** instead of SMTP:
 
 - **Faster** - Direct API calls vs SMTP handshakes
 - **More reliable** - No connection timeouts or limits
@@ -196,7 +152,7 @@ This provider uses Brevo's **Transactional Email API** instead of SMTP:
 ## Requirements
 
 - **Strapi v5.x**
-- **Node.js >= 18**
+- **Node.js >= 20**
 - Brevo account (free tier available)
 
 ## Contributing
@@ -221,9 +177,8 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 - [Brevo (Sendinblue)](https://www.brevo.com/)
 - [Brevo API Documentation](https://developers.brevo.com/reference/sendtransacemail)
-- [Strapi Email Plugin](https://docs.strapi.io/dev-docs/plugins/email)
 - [Strapi v5 Documentation](https://docs.strapi.io/)
 
 ---
 
-Made with ❤️ for the Strapi community
+Made with love for the Strapi community
