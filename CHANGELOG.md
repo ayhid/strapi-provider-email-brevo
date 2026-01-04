@@ -1,3 +1,18 @@
+# [3.0.0](https://github.com/ayhid/strapi-provider-email-brevo/compare/v2.0.0...v3.0.0) (2026-01-04)
+
+
+* feat!: convert to full Strapi v5 plugin with admin settings ([fd07a7e](https://github.com/ayhid/strapi-provider-email-brevo/commit/fd07a7ebee95a75b5c23903dd7ba23e124d1262e))
+
+
+### Bug Fixes
+
+* revert package name to maintain npm compatibility ([b4a15b0](https://github.com/ayhid/strapi-provider-email-brevo/commit/b4a15b01d8266b07a3f5385e2011d34d23288e74))
+
+
+### BREAKING CHANGES
+
+* Package restructured as full Strapi plugin with admin interface
+
 # [2.0.0](https://github.com/ayhid/strapi-provider-email-brevo/compare/v1.0.0...v2.0.0) (2026-01-03)
 
 
